@@ -1,0 +1,21 @@
+├── backend/ # Node + Express (API lives here) 
+│ ├── src/ 
+│ │ ├── routes/ 
+│ │ │ ├── auth.routes.js 
+│ │ │ └── todo.routes.js 
+│ │ ├── controllers/ 
+│ │ │ ├── auth.controller.js 
+│ │ │ └── todo.controller.js 
+│ │ ├── middleware/ 
+│ │ │ └── auth.middleware.js 
+│ │ ├── models/ 
+│ │ │ └── User.js 
+│ │ ├── config/ 
+│ │ │ └── db.js 
+│ │ └── index.js 
+│ ├── package.json 
+│ └── .env
+
+
+src/index.js
+|   app entry point
