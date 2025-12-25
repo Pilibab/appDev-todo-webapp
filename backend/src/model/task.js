@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema({
     taskName: {type: String, required: true},
-    priorityLevel: { type: String, enum: ["low", "med", "high"], default:"low"},
+    taskDetail: {type: String, required: false},
+    priorityLevel: { type: String, enum: ["none","low", "med", "high"], default:"none"},
     dateAdded: {type: Date, default: Date.now},
     isResolved: {type: Boolean, default: false} 
 });

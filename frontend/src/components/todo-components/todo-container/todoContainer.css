@@ -1,0 +1,18 @@
+.todo-container {
+    /* border: 1px solid blue; */
+    width: 50vw;
+    height: inherit;
+}
+
+.title {
+    font-size: xx-large;
+    font-weight: bolder;
+}
+
+#my-task-container {
+    border: 1px solid blue;
+    height: inherit;
+    padding: 10px 20px;
+    display: flex;
+}
+

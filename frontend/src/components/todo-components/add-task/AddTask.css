@@ -1,0 +1,30 @@
+/* Add to your CSS file */
+.popup-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6); /* Dim the background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 300px;
+}
+
+.add-task-btn {
+    border: 1px solid black;
+    padding: 3px 5px;
+}
+
+.add-task-label {
+    font-size: x-small;
+}

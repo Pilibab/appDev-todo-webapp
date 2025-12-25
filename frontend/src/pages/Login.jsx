@@ -1,5 +1,4 @@
 import "..//style/login.css";
-import LoginButton from  "../components/LoginButton.jsx"
 const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -38,6 +37,8 @@ const Login = () => {
         }
     };
 
+    const handleLogin()
+
     return (
         <div className="login-container">
         <form className="login-box" onSubmit={handleSubmit}>
@@ -58,8 +59,7 @@ const Login = () => {
             />
 
             <button type="submit">Sign Up</button>
-            <LoginButton/>
-
+            <button type="button">Log in</button>
         </form>
         </div>
     );

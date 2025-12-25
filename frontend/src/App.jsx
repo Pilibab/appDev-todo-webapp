@@ -8,6 +8,12 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
+
+      {/* remove this path  */}
+      {/* <Route path="/" element={<Navigate to="/to-do" replace />} /> */}
+
+
+      
       <Route path="/login" element={<Login/>} />
       <Route path="/to-do" element={<ToDo />} />
     </Routes>

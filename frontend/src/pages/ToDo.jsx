@@ -1,8 +1,10 @@
+import TodoContainer from "../components/todo-components/todo-container/TodoContainer";
+
 const ToDo = () => {
 
     return (
         <>
-            <h1>Todo page</h1>
+            <TodoContainer></TodoContainer>
         </>
     )
 }
