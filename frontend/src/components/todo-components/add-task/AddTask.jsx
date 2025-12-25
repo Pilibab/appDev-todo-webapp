@@ -20,19 +20,33 @@ const AddTask = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("/api/task/add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({ taskName: "Study JWT" })
-        });
+        try {
+            const response = await fetch("http://localhost:3000/api/task/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                // Pass the whole state object
+                body: JSON.stringify(taskData) 
+            });
 
-        const data = await response.json();
-        console.log(data);
-
-        setShowPopup(false);
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Task Added:", data);
+                
+                // 1. Reset the form
+                setTaskData({ taskName: "", priorityLevel: "low" });
+                // 2. Close the popup
+                setShowPopup(false);
+                // 3. Refresh the parent list so the new task appears!
+                if (refreshTasks) refreshTasks(); 
+            } else {
+                alert("Failed to add task. Check console.");
+            }
+        } catch (err) {
+            console.error("Error adding task:", err);
+        }
     };
 
 
