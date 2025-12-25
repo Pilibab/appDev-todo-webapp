@@ -84,7 +84,7 @@ app.post("/auth/login", async (req, res) => {
     }
 });
 
-// 4. Get Tasks (Protected)
+// Get Tasks (Protected)
 app.get("/api/tasks", auth, async (req, res) => {
     try {
         const user = await User.findById(req.userId);
@@ -95,7 +95,7 @@ app.get("/api/tasks", auth, async (req, res) => {
     }
 });
 
-// 5. Add Task (Protected)
+// Add Task (Protected)
 app.post("/api/task/add", auth, async (req, res) => {
     const { taskName } = req.body;
     try {

@@ -1,13 +1,17 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  width: 100%;           /* Change from max-width to width */
+  min-height: 100vh;     /* Allow it to be at least the full height */
+  margin: 0;
   padding: 2rem;
   text-align: center;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: none;
+  /* overflow: hidden; */ /* REMOVE THIS to allow scrolling */
+}
+
+body {
+  margin: 0;
+  display: block;        /* Changing from flex to block often helps overflow issues */
+  width: 100vw;
+  min-height: 100vh;
 }
 
 .bar {
@@ -15,5 +19,11 @@
   width: inherit;
   background-color: rgb(194, 190, 190);
   border-radius: 5%;
+  margin: 10px 0px;
 }
 
+.app {
+  max-height: 100vh;
+  display: flex;
+  justify-content: center;
+}

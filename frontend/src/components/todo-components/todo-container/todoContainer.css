@@ -10,9 +10,12 @@
 }
 
 #my-task-container {
-    border: 1px solid blue;
-    height: inherit;
+    border: 1px solid rgb(198, 193, 193);
+    height: max-content;
     padding: 10px 20px;
     display: flex;
+    margin: 10px 0px;
+    flex-direction: column;
+    border-radius: 15px;
 }
 

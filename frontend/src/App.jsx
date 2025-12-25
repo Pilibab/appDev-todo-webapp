@@ -10,8 +10,8 @@ function App() {
   const {userName, setUserName, token, setToken, isAuth, setAuth} = useContext(CredentialContext);
 
   return (
-    <Routes>
-
+    <div className='app'>
+          <Routes>
 
       <Route path="/" element={<Navigate to="/login" replace />} />
 
@@ -23,9 +23,7 @@ function App() {
       <Route path="/login" element={<Login/>} />
       <Route path="/to-do" element={<ToDo />} />
     </Routes>
-
-
-
+    </div>
   )
 }
 

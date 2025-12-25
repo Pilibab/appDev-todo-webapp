@@ -1,0 +1,47 @@
+/* The Main Card Container */
+.task-item-card {
+    display: flex;
+    justify-content: space-between; /* Pushes text left and checkbox right */
+    align-items: center;            /* Vertically centers everything */
+    padding: 12px 20px;
+    margin-bottom: 12px;
+    background: #ffffff;
+    border-radius: 10px;
+    cursor: pointer;
+    border-left: 6px solid var(--shadow-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+}
+
+.task-item-card:hover {
+    box-shadow: 0 5px 15px var(--shadow-color);
+    transform: scale(1.01);
+}
+
+/* Wrapper for the Title and Date */
+.task-info-wrapper {
+    display: flex;
+    flex-direction: column; /* Stacks Title on top of Date */
+    gap: 4px;               /* Space between title and date */
+    flex-grow: 1;           /* Takes up all available space */
+}
+
+.task-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #2d3436;
+}
+
+.task-date {
+    font-size: 0.8rem;
+    color: #636e72;
+    font-style: italic;
+}
+
+/* The Radio/Checkbox styling */
+.task-item-card input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin-left: 15px; /* Space between text and circle */
+}

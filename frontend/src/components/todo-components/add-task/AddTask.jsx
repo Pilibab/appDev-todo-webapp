@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "../add-task/AddTask.css"
+import CredentialContext from "../../../context/CredentialContext";
 const AddTask = () => {
+    const {userName, setUserName, token, setToken, isAuth, setAuth} = useContext(CredentialContext);
+    
     const [showPopup, setShowPopup] = useState(false);
     
     // Initial state for a blank task
