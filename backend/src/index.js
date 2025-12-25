@@ -1,176 +1,122 @@
-// Suggested Tech Stack: Node.js, Express.js, MongoDB, JWT Auth
-import jwt from "jsonwebtoken"
-import express from "express"
+import jwt from "jsonwebtoken";
+import express from "express";
 import dotenv from "dotenv";
-import cors from "cors"
-import bcrypt from "bcrypt"
+import cors from "cors";
+import bcrypt from "bcrypt";
 
 import { connectDb } from "./config/db.js";
 import { auth } from "./middleware/auth.js";
 import User from "./model/user.js";
-// import { taskSchema, Task } from "./model/task.js";
-// import {User} from "./model/user.js";
 
-// load env
 dotenv.config();
 
-// 
+const app = express();
+const port = process.env.PORT || 3000;
 const saltRounds = 10;
 
-
-// server 
-const app = express()
-const port = process.env.PORT || 3000;
-
+// Middleware
 app.use(cors({
-    origin: "http://localhost:5173", // Allow your React app
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
+app.use(express.json());
 
-app.use(express.json())
-// allows communication between front and back end 
-// app.use(cors())
+// --- ROUTES ---
 
+// 1. Check if user exists (Updated to use Mongoose)
 app.post("/api/check-user", async (req, res) => {
     try {
-        const database = getDB();
-        const users = database.collection("users");
-
-        // match the user
-        const user = await users.findOne({userName: req.body.username})
-
-        if (user) {
-            // sign in ❌ login ✅
-            res.json({ exists: true });
-        } else {
-            // sign in ✅ login ❌
-            res.json({ exists: false });
-        }
-
+        const user = await User.findOne({ userName: req.body.username });
+        res.json({ exists: !!user });
     } catch (error) {
         res.status(500).json({ error: "Database error" });
     }
-})
+});
 
-
-// when the form is submit this will be called 
+// 2. Register
 app.post("/auth/register", async (req, res) => {
-    const {username, password} = req.body;
-
+    const { username, password } = req.body;
     try {
-        // check if user name is taken
         const existingUser = await User.findOne({ userName: username });
-
         if (existingUser) {
             return res.status(400).json({ error: "Username already taken!" });
         }
 
-        // if not 
-        const hashedPassword = await bcrypt.hash(password, saltRounds)
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        const newUser = await User.create({
+        const newUser = new User({
             userName: username,
             passWord: hashedPassword,
-            task: []
-        })
+            tasks: [] // Changed from 'task' to 'tasks' to match your schema
+        });
 
         await newUser.save();
-
         res.status(201).json({ message: "User registered successfully!" });
     } catch (err) {
-        // Handle the MongoDB Unique Index error if the findOne check missed it
-        if (err.code === 11000) {
-            return res.status(400).json({ error: "Username already exists!" });
-        }
         console.error(err);
         res.status(500).json({ error: "Server error during registration" });
     }
 });
 
+// 3. Login
 app.post("/auth/login", async (req, res) => {
-    const { username, password } = req.body;
+    try {
+        const { username, password } = req.body;
 
-    const user = await User.findOne({ userName: username });
-    if (!user) return res.status(401).json({ error: "Invalid credentials" });
+        const user = await User.findOne({ userName: username });
+        if (!user) return res.status(401).json({ error: "Invalid credentials" });
 
-    const match = await bcrypt.compare(password, user.passWord);
-    if (!match) return res.status(401).json({ error: "Invalid credentials" });
+        const match = await bcrypt.compare(password, user.passWord);
+        if (!match) return res.status(401).json({ error: "Invalid credentials" });
 
-    const token = jwt.sign(
-        { userId: user._id },
-        process.env.JWT_SECRET,
-        { expiresIn: "1h" }
-    );
+        // IMPORTANT: Ensure your .env has JWT_KEY
+        const token = jwt.sign(
+            { userId: user._id },
+            process.env.JWT_KEY, 
+            { expiresIn: "1h" }
+        );
 
-    res.json({ token });
+        res.json({ token, username: user.userName });
+    } catch (error) {
+        console.error("Login Error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
 });
 
-// todo: create a method for getting task
-app.post("/api/task", async (req, res) => {
-    const {credentials} = req.body; // temp 
-
+// 4. Get Tasks (Protected)
+app.get("/api/tasks", auth, async (req, res) => {
     try {
-        const database = getDB();
-        const user = database.collection("taskXuser").findOne(credentials);
-
-        res.json(user);
-    } catch (err) {
-        
-    }
-})
-
-// !method for adding task to db
-app.post("/api/task/add", async (req, res) => {
-    const { username, taskName, taskDetail, priorityLevel } = req.body;
-
-    try {
-        const database = getDB();
-        const users = database.collection("taskXuser");
-
-        const user = await users.updateOne(
-            { userName: username });
-
-        // should not be possible 
+        const user = await User.findById(req.userId);
         if (!user) return res.status(404).json({ error: "User not found" });
-        
-        user.task.push({taskName, taskDetail, priorityLevel});
-
-        await user.save();
-        
-        console.log({ message: "Task added" });
-        
-        res.status(201).json({ message: "Task added" });
-
+        res.json(user.tasks);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Database error" });
+        res.status(500).json({ error: "Server error" });
     }
 });
 
-
-
-
+// 5. Add Task (Protected)
 app.post("/api/task/add", auth, async (req, res) => {
     const { taskName } = req.body;
+    try {
+        const user = await User.findById(req.userId);
+        if (!user) return res.status(404).json({ error: "User not found" });
 
-    const user = await User.findById(req.userId);
+        user.tasks.push({ taskName }); 
+        await user.save();
 
-    user.tasks.push({ taskName });
-    await user.save();
-
-    res.json({ message: "Task added" });
+        res.json({ message: "Task added", tasks: user.tasks });
+    } catch (err) {
+        res.status(500).json({ error: "Server error" });
+    }
 });
 
-
-
+// Start Server
 async function startServer() {
-    await connectDb()
+    await connectDb();
     app.listen(port, () => {
-        console.log(`listening at http://localhost:${port}`);
-    })
+        console.log(`🚀 Server listening at http://localhost:${port}`);
+    });
 }
 
-
-startServer()
-
+startServer();

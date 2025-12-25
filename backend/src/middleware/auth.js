@@ -1,3 +1,4 @@
+// auth.js
 import jwt from "jsonwebtoken";
 
 export function auth(req, res, next) {
@@ -10,7 +11,7 @@ export function auth(req, res, next) {
     const token = header.split(" ")[1];
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_KEY);
         req.userId = decoded.userId;
         next();
     } catch {
