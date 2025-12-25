@@ -1,0 +1,8 @@
+installation: 
+npm run install-all
+
+
+running backend && front end 
+npm run dev 
+
+before running ensure that u have your own mongodb URI and change the .env.example.env to .env 
