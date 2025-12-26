@@ -16,7 +16,7 @@ const saltRounds = 10;
 
 // Middleware
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     credentials: true
 }));
@@ -181,11 +181,23 @@ app.patch("/api/tasks/:taskId/resolve", auth, async (req, res) => {
 });
 
 // Start Server
-async function startServer() {
-    await connectDb();
+// async function startServer() {
+//     await connectDb();
+//     app.listen(port, () => {
+//         console.log(`🚀 Server listening at http://localhost:${port}`);
+//     });
+// }
+
+// startServer();
+
+
+app.get("/", (req, res) => res.send("Task API is running..."));
+
+// We export the app for Vercel, but only call app.listen locally
+if (process.env.NODE_ENV !== "production") {
     app.listen(port, () => {
-        console.log(`🚀 Server listening at http://localhost:${port}`);
+        console.log(` server at http://localhost:${port}`);
     });
 }
 
-startServer();
+export default app;

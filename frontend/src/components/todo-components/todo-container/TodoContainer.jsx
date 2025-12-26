@@ -6,6 +6,9 @@ import "../todo-container/todoContainer.css";
 import "../../../style/App.css";
 import CredentialContext from "../../../context/CredentialContext";
 
+
+const API_BASE_URL = import.meta.env.VITE_BACKEND_BASEURL;
+
 const TodoContainer = () => {
     const { token } = useContext(CredentialContext);
     const [tasks, setTasks] = useState([]);
@@ -30,7 +33,7 @@ const TodoContainer = () => {
         }
 
         try {
-            const response = await fetch("http://localhost:3000/api/tasks", {
+            const response = await fetch(`${API_BASE_URL}/api/tasks`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -83,7 +86,7 @@ const TodoContainer = () => {
         try {
             console.log(`Toggling task ${taskId} to resolved: ${newResolvedState}`);
 
-            const response = await fetch(`http://localhost:3000/api/tasks/${taskId}/resolve`, {
+            const response = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/resolve`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -129,7 +132,7 @@ const TodoContainer = () => {
         try {
             console.log("Deleting task IDs:", selectedIdsArray);
 
-            const response = await fetch("http://localhost:3000/api/tasks/delete", {
+            const response = await fetch(`${API_BASE_URL}/api/tasks/delete`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

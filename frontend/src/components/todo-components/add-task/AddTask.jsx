@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
 import "../add-task/AddTask.css"
 import CredentialContext from "../../../context/CredentialContext";
+const API_BASE_URL = import.meta.env.VITE_BACKEND_BASEURL;
+
 
 const AddTask = ({ refreshTasks }) => { 
     const { token } = useContext(CredentialContext);
@@ -25,7 +27,7 @@ const AddTask = ({ refreshTasks }) => {
         console.log("Sending to Backend:", taskData);
 
         try {
-            const response = await fetch("http://localhost:3000/api/task/add", {
+            const response = await fetch(`${API_BASE_URL}/api/task/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

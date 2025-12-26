@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import "..//style/login.css";
 import { useNavigate } from "react-router-dom";
 import CredentialContext from "../context/CredentialContext";
+const API_BASE_URL = import.meta.env.VITE_BACKEND_BASEURL;
+
 
 const Login = () => {
 
@@ -37,7 +39,7 @@ const Login = () => {
         }
 
         try {
-            const response = await fetch("http://localhost:3000/auth/register", {
+            const response = await fetch(`${API_BASE_URL}/auth/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -71,7 +73,7 @@ const Login = () => {
         }
 
         try {
-            const response = await fetch("http://localhost:3000/auth/login", {
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ 
