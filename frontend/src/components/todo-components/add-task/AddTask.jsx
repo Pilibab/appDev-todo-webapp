@@ -54,7 +54,8 @@ const AddTask = ({ refreshTasks }) => {
 
     return (
         <>
-            <button className="add-task-btn" onClick={() => setShowPopup(true)}>
+            <button className="btn-primary-trigger" onClick={() => setShowPopup(true)}>
+                <span className="plus-icon">+</span>
                 <span className="add-task-label">Add New Task</span>
             </button>
 

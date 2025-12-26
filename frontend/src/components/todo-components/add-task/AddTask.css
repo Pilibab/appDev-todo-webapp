@@ -82,3 +82,72 @@
 .button-group button:hover {
     opacity: 0.9;
 }
+
+/* The Main "Add New Task" Floating Button */
+.btn-primary-trigger {
+    background: #2d3436; /* Matching your submit button color */
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 20px rgba(45, 52, 54, 0.2);
+    margin: 20px auto; /* Centers it if needed */
+}
+
+.btn-primary-trigger:hover {
+    transform: translateY(-3px);
+    background: #000; /* Darker on hover */
+    box-shadow: 0 15px 30px rgba(45, 52, 54, 0.3);
+}
+
+.btn-primary-trigger:active {
+    transform: translateY(0);
+}
+
+.plus-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+/* Modal Form Labels (Fixing the 'span' styles you had) */
+.popup-content label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #95a5a6;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: -5px; /* Pulls label closer to its input */
+}
+
+/* Success State for Add Task Button inside Modal */
+.button-group button[type="submit"] {
+    background: #2d3436;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Cancel Button inside Modal */
+.button-group button[type="button"] {
+    background: #ffffff;
+    color: #57606f;
+    border: 1px solid #dfe6e9;
+}
+
+.button-group button[type="button"]:hover {
+    background: #fff;
+    color: #ff7675; /* Turns red on hover to signal 'cancel/close' */
+    border-color: #ff7675;
+}
+.popup-content input:focus, 
+.popup-content select:focus {
+    border-color: #2d3436; /* Matches the button color */
+    background-color: #f8f9fa;
+}
