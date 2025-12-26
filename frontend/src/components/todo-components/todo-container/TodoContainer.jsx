@@ -12,6 +12,15 @@ const TodoContainer = () => {
     const [isDeleteMode, setIsDeleteMode] = useState(false);
     const [selectedTasks, setSelectedTasks] = useState(new Set());
     const [showCompleted, setShowCompleted] = useState(false);
+    const [showFilterMenu, setShowFilterMenu] = useState(false);
+    
+    // Priority filter state - all enabled by default
+    const [priorityFilters, setPriorityFilters] = useState({
+        none: true,
+        low: true,
+        med: true,
+        high: true
+    });
 
     const getTasks = async () => {
         if (!token) {
@@ -87,7 +96,6 @@ const TodoContainer = () => {
                 const result = await response.json();
                 console.log("Task resolved status updated:", result);
                 
-                // Refresh tasks to show updated state
                 await getTasks();
             } else {
                 const errorData = await response.json();
@@ -150,7 +158,7 @@ const TodoContainer = () => {
     };
 
     const selectAll = () => {
-        const allTaskIds = tasks.map(task => String(task._id));
+        const allTaskIds = filteredTasks.map(task => String(task._id));
         console.log("Selecting all:", allTaskIds);
         setSelectedTasks(new Set(allTaskIds));
     };
@@ -160,25 +168,61 @@ const TodoContainer = () => {
         setSelectedTasks(new Set());
     };
 
-    // Filter tasks based on completion status
-    const filteredTasks = showCompleted 
-        ? tasks 
-        : tasks.filter(task => !task.isResolved);
+    const togglePriorityFilter = (priority) => {
+        setPriorityFilters(prev => ({
+            ...prev,
+            [priority]: !prev[priority]
+        }));
+    };
+
+    const selectAllPriorities = () => {
+        setPriorityFilters({
+            none: true,
+            low: true,
+            med: true,
+            high: true
+        });
+    };
+
+    const deselectAllPriorities = () => {
+        setPriorityFilters({
+            none: false,
+            low: false,
+            med: false,
+            high: false
+        });
+    };
+
+    // Filter tasks based on completion status AND priority
+    const filteredTasks = tasks
+        .filter(task => showCompleted ? true : !task.isResolved) // Filter by completion
+        .filter(task => priorityFilters[task.priorityLevel]); // Filter by priority
 
     const completedCount = tasks.filter(task => task.isResolved).length;
     const pendingCount = tasks.length - completedCount;
 
+    // Count active filters
+    const activeFilterCount = Object.values(priorityFilters).filter(v => v).length;
+
     return (
         <div className="container todo-container">
             <div className="header-section">
-                <p className="title">
-                    Tasks 
-                    <span style={{ fontSize: '1rem', color: '#636e72', marginLeft: '10px' }}>
-                        ({pendingCount} pending / {completedCount} completed)
-                    </span>
-                </p>
+                <div>
+                    <p className="title">
+                        Tasks 
+                        <span style={{ fontSize: '1rem', color: '#636e72', marginLeft: '10px' }}>
+                            ({pendingCount} pending / {completedCount} completed)
+                        </span>
+                    </p>
+                </div>
 
                 <div className="action-buttons">
+                    <button 
+                        className={`filter-btn ${showFilterMenu ? 'active' : ''}`}
+                        onClick={() => setShowFilterMenu(!showFilterMenu)}
+                    >
+                        Filter ({activeFilterCount}/4)
+                    </button>
                     <button 
                         className={`toggle-show-btn ${showCompleted ? 'active' : ''}`}
                         onClick={() => setShowCompleted(!showCompleted)}
@@ -193,6 +237,69 @@ const TodoContainer = () => {
                     </button>
                 </div>
             </div>
+
+            {/* Priority Filter Menu */}
+            {showFilterMenu && (
+                <div className="filter-menu">
+                    <div className="filter-header">
+                        <span className="filter-title">Filter by Priority</span>
+                        <div className="filter-actions">
+                            <button onClick={selectAllPriorities} className="filter-action-btn">
+                                All
+                            </button>
+                            <button onClick={deselectAllPriorities} className="filter-action-btn">
+                                None
+                            </button>
+                        </div>
+                    </div>
+                    <div className="filter-options">
+                        <label className="filter-option">
+                            <input
+                                type="checkbox"
+                                checked={priorityFilters.none}
+                                onChange={() => togglePriorityFilter('none')}
+                            />
+                            <span className="filter-label">
+                                <span className="priority-indicator none"></span>
+                                None
+                            </span>
+                        </label>
+                        <label className="filter-option">
+                            <input
+                                type="checkbox"
+                                checked={priorityFilters.low}
+                                onChange={() => togglePriorityFilter('low')}
+                            />
+                            <span className="filter-label">
+                                <span className="priority-indicator low"></span>
+                                Low
+                            </span>
+                        </label>
+                        <label className="filter-option">
+                            <input
+                                type="checkbox"
+                                checked={priorityFilters.med}
+                                onChange={() => togglePriorityFilter('med')}
+                            />
+                            <span className="filter-label">
+                                <span className="priority-indicator med"></span>
+                                Medium
+                            </span>
+                        </label>
+                        <label className="filter-option">
+                            <input
+                                type="checkbox"
+                                checked={priorityFilters.high}
+                                onChange={() => togglePriorityFilter('high')}
+                            />
+                            <span className="filter-label">
+                                <span className="priority-indicator high"></span>
+                                High
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            )}
 
             {isDeleteMode && (
                 <div className="delete-controls">
@@ -235,7 +342,7 @@ const TodoContainer = () => {
                         />
                     ))
                 ) : (
-                    <p>{showCompleted ? 'No tasks found.' : 'No pending tasks! 🎉'}</p>
+                    <p>{showCompleted ? 'No tasks match the selected filters.' : 'No pending tasks! 🎉'}</p>
                 )}
             </div>
 

@@ -10,6 +10,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-direction: column;
 }
 
 .title {
@@ -149,4 +150,129 @@
     cursor: pointer;
     width: 20px;
     height: 20px;
+}
+
+/* Filter Button */
+.filter-btn {
+    padding: 0.5rem 1rem;
+    background-color: #9b59b6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    margin-right: 0.5rem;
+}
+
+.filter-btn:hover {
+    background-color: #8e44ad;
+}
+
+.filter-btn.active {
+    background-color: #6c3483;
+}
+
+/* Filter Menu */
+.filter-menu {
+    background-color: #f8f9fa;
+    border: 2px solid #9b59b6;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.filter-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #2c3e50;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.filter-action-btn {
+    padding: 0.3rem 0.6rem;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.filter-action-btn:hover {
+    background-color: #9b59b6;
+    color: white;
+    border-color: #9b59b6;
+}
+
+.filter-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-option:hover {
+    border-color: #9b59b6;
+    background-color: #f3e5f5;
+}
+
+.filter-option input[type="checkbox"] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+.filter-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: #2c3e50;
+}
+
+/* Priority Indicators in Filter */
+.priority-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.priority-indicator.none {
+    background-color: gray;
+}
+
+.priority-indicator.low {
+    background-color: #f1c40f;
+}
+
+.priority-indicator.med {
+    background-color: #e67e22;
+}
+
+.priority-indicator.high {
+    background-color: #e74c3c;
 }
