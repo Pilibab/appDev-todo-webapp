@@ -1,4 +1,11 @@
 {
+  "name": "todo-backend",
+  "version": "1.0.0",
+  "type": "module", 
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
@@ -10,6 +17,7 @@
     "mongoose": "^9.0.2"
   },
   "devDependencies": {
-    "@types/node": "^25.0.3"
+    "@types/node": "^25.0.3",
+    "nodemon": "^3.1.0"
   }
 }
